@@ -1,5 +1,6 @@
 
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentListener;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -17,6 +18,35 @@ public class KonversiSuhuForm extends javax.swing.JFrame {
      */
     public KonversiSuhuForm() {
         initComponents();
+        
+        /// Menambahkan DocumentListener untuk input suhu
+        inputSuhu.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                konversiOtomatis();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                konversiOtomatis();
+            }
+
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                konversiOtomatis();
+            }
+        });
+
+    }
+    
+    // Fungsi konversi otomatis
+    private void konversiOtomatis() {
+        try {
+            double suhu = Double.parseDouble(inputSuhu.getText());
+            btnKonversiActionPerformed(null); // Panggil logika konversi
+        } catch (NumberFormatException e) {
+            hasilTextField.setText(""); // Kosongkan hasil jika input tidak valid
+        }
     }
 
     /**
@@ -51,7 +81,7 @@ public class KonversiSuhuForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(227, 227, 255));
+        jPanel1.setBackground(new java.awt.Color(198, 198, 249));
 
         jLabel5.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
         jLabel5.setText("Aplikasi Konversi Suhu");
@@ -252,7 +282,7 @@ public class KonversiSuhuForm extends javax.swing.JFrame {
         } else if (celciusRadioButton.isSelected()) {
             // Konversi ke celcius
             hasil = switch (skalaAwal) {
-                case "Fahrenheit" -> (suhu - 32) * 4/9;
+                case "Fahrenheit" -> (suhu - 32) * 5/9; 
                 case "Kelvin" -> (suhu - 273.15) * 4/5;
                 case "Reamur" -> suhu * 5/4 + 273.15;
                 default -> suhu;
